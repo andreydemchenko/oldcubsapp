@@ -3,30 +3,31 @@ package ru.turbopro.cubsappjava;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.CameraSelector;
+import androidx.camera.core.Preview;
+import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
-import com.budiyev.android.codescanner.AutoFocusMode;
-import com.budiyev.android.codescanner.CodeScanner;
-import com.budiyev.android.codescanner.CodeScannerView;
-import com.budiyev.android.codescanner.DecodeCallback;
-import com.budiyev.android.codescanner.ErrorCallback;
-import com.budiyev.android.codescanner.ScanMode;
-import com.google.zxing.Result;
+import com.google.common.util.concurrent.ListenableFuture;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class QRCodeScannerActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST_CODE = 101;
-    private CodeScanner mCodeScanner;
-    private CodeScannerView scannerView;
+    private PreviewView codeScanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,53 +38,81 @@ public class QRCodeScannerActivity extends AppCompatActivity {
         if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
 
-        scannerView = findViewById(R.id.scanner_view);
-        mCodeScanner = new CodeScanner(this, scannerView);
-        setupPermission();
-        codeScanner();
+        codeScanner = findViewById(R.id.scanner_view);
+
+        if (!allPermissionsGranted(this))
+            getRuntimePermissions(this);
+        else startCamera();
     }
 
-    private void codeScanner() {
-        mCodeScanner.setCamera(CodeScanner.CAMERA_BACK);
-        mCodeScanner.setFormats(CodeScanner.ALL_FORMATS);
-        mCodeScanner.setAutoFocusMode(AutoFocusMode.SAFE);
-        mCodeScanner.setScanMode(ScanMode.CONTINUOUS);
-        mCodeScanner.isAutoFocusEnabled();
-        mCodeScanner.isFlashEnabled();
-        mCodeScanner.setDecodeCallback(result -> Toast.makeText(QRCodeScannerActivity.this, result.getText(), Toast.LENGTH_SHORT).show());
-        mCodeScanner.setErrorCallback(error -> Log.e("QRCodeScannerActivity", "Camera initialisation error: " + error.getMessage()));
-        scannerView.setOnClickListener(view -> mCodeScanner.startPreview());
+    private void startCamera() {
+        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(getApplication());
+        cameraProviderFuture.addListener(() -> {
+                    try {
+                        ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+
+                        Preview.Builder builder = new Preview.Builder();
+                        Preview previewUseCase = builder.build();
+                        previewUseCase.setSurfaceProvider(codeScanner.getSurfaceProvider());
+                        CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
+                        cameraProvider.unbindAll();
+                        cameraProvider.bindToLifecycle(this, cameraSelector, previewUseCase);
+                    } catch (ExecutionException | InterruptedException e) {
+                        Log.e("TAG", "Unhandled exception", e);
+                    }
+                }, ContextCompat.getMainExecutor(getApplication()));
     }
 
-    private void setupPermission(){
-        int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-        if (permission != PackageManager.PERMISSION_GRANTED)
-            makeRequest();
-    }
+    private static String[] getRequiredPermissions(Context context) {
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_PERMISSIONS);
+            String[] ps = info.requestedPermissions;
 
-    private void makeRequest() {
-        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
-    }
+            if (ps != null && ps.length > 0)
+                return ps;
+            else
+                return new String[0];
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == CAMERA_REQUEST_CODE) {
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED)
-                Toast.makeText(this, "You need a camera permission to be able to use QR scanner", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            return new String[0];
         }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public static boolean allPermissionsGranted(Context context) {
+        for (String permission : getRequiredPermissions(context))
+            if (!isPermissionGranted(context, permission)) return false;
+        return true;
+    }
+
+    public static void getRuntimePermissions(Activity activity) {
+        List<String> allNeededPermissions = new ArrayList<>();
+        for (String permission : getRequiredPermissions(activity))
+            if (!isPermissionGranted(activity, permission))
+                allNeededPermissions.add(permission);
+
+        if (!allNeededPermissions.isEmpty())
+            ActivityCompat.requestPermissions(activity, allNeededPermissions.toArray(new String[0]), CAMERA_REQUEST_CODE);
+    }
+
+    private static boolean isPermissionGranted(Context context, String permission) {
+        if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
+            Log.i("TAG", "Permission granted: " + permission);
+            return true;
+        }
+        Log.i("TAG", "Permission NOT granted: " + permission);
+        return false;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mCodeScanner.startPreview();
+        //mCodeScanner.startPreview();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mCodeScanner.releaseResources();
+       //mCodeScanner.releaseResources();
     }
 
     @Override
