@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeItem"
+        android:title="Home"
+        android:icon="@drawable/ic_home_for_navbar"/>
+    <item
+        android:id="@+id/shopItem"
+        android:title="Shop"
+        android:icon="@drawable/ic_shop_for_navbar"/>
+    <item
+        android:id="@+id/topItem"
+        android:title="Top"
+        android:icon="@drawable/ic_top_for_navbar"/>
+</menu>

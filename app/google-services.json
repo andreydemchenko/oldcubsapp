@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "853191587282",
+    "project_id": "cubapp-cd4ba",
+    "storage_bucket": "cubapp-cd4ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853191587282:android:8b9d625ea7205b07ddc40b",
+        "android_client_info": {
+          "package_name": "ru.turbopro.cubsappjava"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "853191587282-6sjmmd7e03erqfgbkdtpk9acgjcf7ak6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe90WS2YyUJb9kr0qfMAi3fBGK0ygD0KI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "853191587282-6sjmmd7e03erqfgbkdtpk9acgjcf7ak6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
