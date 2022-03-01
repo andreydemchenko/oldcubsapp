@@ -4,9 +4,11 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +25,8 @@ public class ShopFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private View view;
 
     public ShopFragment() {
         // Required empty public constructor
@@ -58,7 +62,12 @@ public class ShopFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_shop, container, false);
+        TextView tvLink = view.findViewById(R.id.tvLinkStore);
+        tvLink.setTextColor(getResources().getColor(R.color.teal_700));
+        tvLink.setMovementMethod(LinkMovementMethod.getInstance());
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shop, container, false);
+        return view;
     }
 }
