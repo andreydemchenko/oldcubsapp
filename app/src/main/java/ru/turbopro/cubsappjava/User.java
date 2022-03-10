@@ -2,38 +2,40 @@ package ru.turbopro.cubsappjava;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.List;
-
 @IgnoreExtraProperties
 public class User {
 
     private String name;
-    private String code;
+    private String login;
+    private String password;
     private String status;
     private int level;
     private int points;
-    private int allPoints;
-    private String imageURL;
+    private int all_points;
+    private String user_image_URL;
+    //private Long achiv_progress;
 
     public User() {}
 
-    public User(String name, String code) {
+    public User(String name, String login, String password) {
         this.name = name;
-        this.code = code;
+        this.login = login;
+        this.password = password;
     }
 
-    public User(String name, String code, int level, String status, int points, int allPoints, String imageURL){
+    public User(String name, String login, int level, String status, int points, int all_points, String user_image_URL){
         this.name = name;
-        this.code = code;
+        this.login = login;
         this.status = status;
         this.level = level;
         this.points = points;
-        this.allPoints = allPoints;
-        this.imageURL = imageURL;
+        this.all_points = all_points;
+        this.user_image_URL = user_image_URL;
+       // this.achiv_progress = achiv_progress;
     }
 
-    public int getAllPoints() {
-        return allPoints;
+    public int getAll_points() {
+        return all_points;
     }
 
     public int getPoints() {
@@ -44,23 +46,27 @@ public class User {
         return status;
     }
 
-    public String getCode() {
-        return code;
+    public String getLogin() {
+        return login;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getImageURL() {
-        return imageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public String getUser_image_URL() {
+        return user_image_URL;
     }
 
     public int getLevel() {
         return level;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    //public Long getAchiv_progress() {
+        //return achiv_progress;
+    //}
 }

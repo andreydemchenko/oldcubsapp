@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 public class EventDetailActivity extends AppCompatActivity {
 
     private ImageView imageView;
@@ -35,9 +37,11 @@ public class EventDetailActivity extends AppCompatActivity {
             String title = arguments.getString("event_name");
             String date = arguments.getString("event_date");
             String text = arguments.getString("event_text");
+            String image = arguments.getString("event_image");
             tvTitle.setText(title);
             tvDate.setText(date);
             tvText.setText(text);
+            Picasso.get().load(image).into(imageView);
         }
     }
 

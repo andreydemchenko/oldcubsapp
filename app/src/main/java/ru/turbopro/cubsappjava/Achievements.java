@@ -1,19 +1,19 @@
 package ru.turbopro.cubsappjava;
 
 public class Achievements {
-    private String imageURL;
+    private String id;
 
     public Achievements() {}
 
-    public Achievements(String name) {
-        this.imageURL = name;
+    public Achievements(String id) {
+        this.id = id;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public String getId() {
+        return id;
     }
 
-    public void setImageURL(String imageURL){
-        this.imageURL = imageURL;
+    public void setId(String id){
+        this.id = id;
     }
 }

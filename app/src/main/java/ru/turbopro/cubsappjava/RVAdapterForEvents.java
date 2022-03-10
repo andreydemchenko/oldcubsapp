@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 interface ClickListener<T> {
@@ -35,7 +37,7 @@ public class RVAdapterForEvents extends RecyclerView.Adapter<RVAdapterForEvents.
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final CardEvent event = cardEvents.get(position);
         holder.title.setText(event.getTitle());
-        holder.image.setBackgroundResource(event.getImage());
+        Picasso.get().load(event.getImage()).into(holder.image);
         holder.cardView.setOnClickListener(v -> clickListener.onItemClick(event));
     }
 

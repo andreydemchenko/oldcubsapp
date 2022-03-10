@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">CubsAppJava</string>
     <string name="tv_sign_up_text">Sign Up</string>
-    <string name="tv_email_text">Email</string>
+    <string name="tv_login_text">Login</string>
     <string name="tv_password_text">Password</string>
     <string name="btn_text_sign_in">Sign In</string>
     <string name="btn_text_sign_up">Sign Up</string>
@@ -28,4 +28,5 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="progressdialog_loading">loading</string>
 </resources>

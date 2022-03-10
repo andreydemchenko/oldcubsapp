@@ -7,14 +7,10 @@
     android:layout_height="match_parent"
     tools:context=".TopFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="24dp"
-        android:text="TopFragment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listview"
+        tools:listitem="@layout/list_item_top"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

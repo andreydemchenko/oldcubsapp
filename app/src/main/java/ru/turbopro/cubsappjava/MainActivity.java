@@ -6,10 +6,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -23,6 +29,9 @@ public class MainActivity extends AppCompatActivity{
     private FirebaseUser currentUser;
     private static String userId;
     private SharedPreferences sharedPreferences;
+
+    private DatabaseReference mFirebaseDatabase;
+    private FirebaseDatabase mFirebaseInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +52,25 @@ public class MainActivity extends AppCompatActivity{
         }
 
         userId = sharedPreferences.getString("MainActivityUserId", "");
+/*
+        mFirebaseInstance = FirebaseDatabase.getInstance();
+        mFirebaseDatabase = mFirebaseInstance.getReference("users");
+        mFirebaseDatabase.child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    User userhere = dataSnapshot.getValue(User.class);
+
+                    Log.e("MainActivity", "User data is changed!" + userhere.getName() + ", " + userhere.getLogin());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.e("MainActivity", "Failed to read user", error.toException());
+            }
+        });*/
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.homeItem);

@@ -7,53 +7,79 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class EventsActivity extends AppCompatActivity {
 
-    private ArrayList<CardEvent> eventsList;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
 
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewEvents);
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
 
-        eventsList = new ArrayList<>();
-        addCard();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewEvents);
-        RVAdapterForEvents recyclerViewAdapter = new RVAdapterForEvents(eventsList);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerViewAdapter.setOnItemClickListener(data -> {
-            Intent intent = new Intent(EventsActivity.this, EventDetailActivity.class);
-            intent.putExtra("event_image", data.getImage());
-            intent.putExtra("event_name", data.getTitle());
-            intent.putExtra("event_date", "February, 26");
-            intent.putExtra("event_text", "Here will be a numerous text which have additional information with all details. It must have exact data.");
-            startActivity(intent);
-        });
-        recyclerView.setAdapter(recyclerViewAdapter);
+        addCards();
     }
 
-    private void addCard() {
-        CardEvent event = new CardEvent("Construction robots", R.drawable.example_event);
-        eventsList.add(event);
-        event = new CardEvent("The best ideas about Mars", R.drawable.example_event2);
-        eventsList.add(event);
-        event = new CardEvent("Build your own lego vehicle", R.drawable.example_event3);
-        eventsList.add(event);
-        event = new CardEvent("Math olympiad 2022", R.drawable.example_event4);
-        eventsList.add(event);
+    private void addCards() {
+        ArrayList<CardEvent> eventsList = new ArrayList<>();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("events");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot reference : snapshot.getChildren()) {
+                        CardEvent event = new CardEvent(
+                                reference.getKey(),
+                                reference.child("name").getValue().toString(),
+                                reference.child("date").getValue().toString(),
+                                reference.child("description").getValue().toString(),
+                                reference.child("image").getValue().toString());
+                        eventsList.add(event);
+                    }
+                }
+                RVAdapterForEvents recyclerViewAdapter = new RVAdapterForEvents(eventsList);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(EventsActivity.this);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerViewAdapter.setOnItemClickListener(data -> {
+                    Intent intent = new Intent(EventsActivity.this, EventDetailActivity.class);
+                    intent.putExtra("event_image", data.getImage());
+                    intent.putExtra("event_name", data.getTitle());
+                    intent.putExtra("event_date", data.getDate());
+                    intent.putExtra("event_text", data.getDescription());
+                    startActivity(intent);
+                });
+                recyclerView.setAdapter(recyclerViewAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("TAG", "onCancelled: Something went wrong! Error:" + error.getMessage());
+            }
+        });
+        /*try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
     }
 
     @Override
