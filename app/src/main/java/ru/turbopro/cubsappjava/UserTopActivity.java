@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import java.util.ArrayList;
+
 import ru.turbopro.cubsappjava.databinding.ActivityUserTopBinding;
 
 public class UserTopActivity extends AppCompatActivity {
@@ -23,14 +25,17 @@ public class UserTopActivity extends AppCompatActivity {
 
         if (intent != null){
             String name = intent.getStringExtra("name");
-            String phone = intent.getStringExtra("phone");
-            String country = intent.getStringExtra("country");
+            String status = intent.getStringExtra("status");
+            String points = intent.getStringExtra("points");
+            ArrayList<String> achivs = intent.getStringArrayListExtra("achievs");
             int imageid = intent.getIntExtra("imageid",R.drawable.a);
 
             binding.nameProfile.setText(name);
-            binding.phoneProfile.setText(phone);
-            binding.countryProfile.setText(country);
+            binding.phoneProfile.setText(status);
+            binding.countryProfile.setText(points);
             binding.profileImage.setImageResource(imageid);
+
+            System.out.println(achivs);
         }
     }
 }

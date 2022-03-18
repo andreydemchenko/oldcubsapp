@@ -72,21 +72,59 @@ public class TopFragment extends Fragment {
         binding = FragmentTopBinding.inflate(getLayoutInflater());
         View viewBinding = binding.getRoot();
 
-        int[] imageId = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e,
+        int[] imageIds = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e,
                 R.drawable.f, R.drawable.g, R.drawable.h, R.drawable.i};
-        String[] name = {"Christopher","Craig","Sergio","Mubariz","Mike","Michael","Toa","Ivana","Alex"};
-        String[] lastMessage = {"Heye","Supp","Let's Catchup","Dinner tonight?","Gotta go",
-                "i'm in meeting","Gotcha","Let's Go","any Weekend Plans?"};
-        String[] lastmsgTime = {"8:45 pm","9:00 am","7:34 pm","6:32 am","5:76 am",
-                "5:00 am","7:34 pm","2:32 am","7:76 am"};
-        String[] phoneNo = {"7656610000","9999043232","7834354323","9876543211","5434432343",
-                "9439043232","7534354323","6545543211","7654432343"};
-        String[] country = {"United States","Russia","India","Israel","Germany","Thailand","Canada","France","Switzerland"};
+        String[] names = {"Christopher","Craig","Sergio","Mubariz","Mike","Michael","Toa","Ivana","Alex"};
+        String[] points = {"8","9","7","6","5", "5","7","2","7"};
+        String[] statuses = {"Beginner","King","Master","Pre-master","Advanced","Beginner","Pre-king","Good","So so"};
 
+        ArrayList<ArrayList<String>> achivs = new ArrayList<>();
+        ArrayList<String> achiv1 = new ArrayList<String>();
+        achiv1.add("1");
+        achiv1.add("2");
+        achiv1.add("3");
+        achivs.add(achiv1);
+        ArrayList<String> achiv2 = new ArrayList<String>();
+        achiv2.add("1");
+        achiv2.add("2");
+        achivs.add(achiv2);
+        ArrayList<String> achiv3 = new ArrayList<String>();
+        achiv3.add("1");
+        achiv3.add("2");
+        achiv3.add("3");
+        achivs.add(achiv3);
+        ArrayList<String> achiv4 = new ArrayList<String>();
+        achiv4.add("1");
+        achiv4.add("2");
+        achiv4.add("3");
+        achivs.add(achiv4);
+        ArrayList<String> achiv5 = new ArrayList<String>();
+        achiv5.add("1");
+        achiv5.add("2");
+        achivs.add(achiv5);
+        ArrayList<String> achiv6 = new ArrayList<String>();
+        achiv6.add("1");
+        achiv6.add("2");
+        achiv6.add("3");
+        achivs.add(achiv6);
+        ArrayList<String> achiv7 = new ArrayList<String>();
+        achiv7.add("1");
+        achiv7.add("2");
+        achiv7.add("3");
+        achivs.add(achiv7);
+        ArrayList<String> achiv8 = new ArrayList<String>();
+        achiv8.add("1");
+        achiv8.add("2");
+        achivs.add(achiv8);
+        ArrayList<String> achiv9 = new ArrayList<String>();
+        achiv9.add("1");
+        achiv9.add("2");
+        achiv9.add("3");
+        achivs.add(achiv9);
         ArrayList<UserTop> userArrayList = new ArrayList<>();
 
-        for(int i = 0; i < imageId.length; i++){
-            UserTop user = new UserTop(name[i], lastMessage[i], lastmsgTime[i], phoneNo[i], country[i], imageId[i]);
+        for(int i = 0; i < imageIds.length; i++){
+            UserTop user = new UserTop(names[i], statuses[i], points[i], achivs.get(i), imageIds[i]);
             userArrayList.add(user);
         }
 
@@ -96,10 +134,11 @@ public class TopFragment extends Fragment {
         binding.listview.setClickable(true);
         binding.listview.setOnItemClickListener((parent, view, position, id) -> {
             Intent i = new Intent(getActivity(), UserTopActivity.class);
-            i.putExtra("name", name[position]);
-            i.putExtra("phone", phoneNo[position]);
-            i.putExtra("country", country[position]);
-            i.putExtra("imageid", imageId[position]);
+            i.putExtra("name", names[position]);
+            i.putExtra("status", statuses[position]);
+            i.putExtra("points", points[position]);
+            i.putExtra("achievs", achivs.get(position));
+            i.putExtra("imageid", imageIds[position]);
             startActivity(i);
         });
         return viewBinding;

@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -113,6 +116,10 @@ public class SignInActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SignInActivity.this);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("SignInUserId", mLoginField.getText().toString().trim());
+            editor.apply();
             Intent intent = new Intent(SignInActivity.this, MainActivity.class);
             intent.putExtra("userId", mLoginField.getText().toString().trim());
             System.out.println("uuuuuuuuuuuuuiiiiiiiiiiiiiiiidddddddd ============== "+user.getUid() + "  code = " + mLoginField.getText());

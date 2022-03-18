@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity{
 
     private FirebaseAuth mAuth;
@@ -28,49 +30,21 @@ public class MainActivity extends AppCompatActivity{
     
     private FirebaseUser currentUser;
     private static String userId;
-    private SharedPreferences sharedPreferences;
-
-    private DatabaseReference mFirebaseDatabase;
-    private FirebaseDatabase mFirebaseInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         mAuth = FirebaseAuth.getInstance();
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
         Bundle arguments = getIntent().getExtras();
-        if (arguments != null) {
+        if (arguments != null)
             userId = arguments.getString("userId");
-            editor.putString("MainActivityUserId", userId);
-            editor.apply();
-        }
-
-        userId = sharedPreferences.getString("MainActivityUserId", "");
-/*
-        mFirebaseInstance = FirebaseDatabase.getInstance();
-        mFirebaseDatabase = mFirebaseInstance.getReference("users");
-        mFirebaseDatabase.child(userId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    User userhere = dataSnapshot.getValue(User.class);
-
-                    Log.e("MainActivity", "User data is changed!" + userhere.getName() + ", " + userhere.getLogin());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e("MainActivity", "Failed to read user", error.toException());
-            }
-        });*/
+        userId = sharedPreferences.getString("SignInUserId", "");
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.homeItem);
@@ -91,16 +65,9 @@ public class MainActivity extends AppCompatActivity{
             return false;
         });
         getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, new HomeFragment()).commit();
-        /*mBtn.setText("Sign out");
-        mBtn.setOnClickListener(view -> {
-            mAuth.signOut();
-            Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-            startActivity(intent);
-            finish();
-        });*/
     }
 
-    public String getUserId(){
+    public static String getUserId(){
         return userId;
     }
 
