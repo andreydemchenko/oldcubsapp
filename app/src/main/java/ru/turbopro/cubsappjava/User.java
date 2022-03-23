@@ -57,12 +57,12 @@ public class User {
         return name;
     }
 
-    public String getNameWP() {
+    public String getNameWP(String fullName) {
         char[] name3 = new char[100];
-        if (name != null) {
-            char[] name2 = name.toCharArray();
+        if (fullName != null) {
+            char[] name2 = fullName.toCharArray();
             int j = 0;
-            for (int i = 0; i < name.length(); i++) {
+            for (int i = 0; i < fullName.length(); i++) {
                 if (name2[i] == ' ') j++;
                 if (j == 2) break;
                 name3[i] = name2[i];

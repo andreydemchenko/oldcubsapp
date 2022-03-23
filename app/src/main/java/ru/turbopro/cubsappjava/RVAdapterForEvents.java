@@ -1,5 +1,7 @@
 package ru.turbopro.cubsappjava;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +39,8 @@ public class RVAdapterForEvents extends RecyclerView.Adapter<RVAdapterForEvents.
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final CardEvent event = cardEvents.get(position);
         holder.title.setText(event.getTitle());
-        Picasso.get().load(event.getImage()).into(holder.image);
+        Bitmap bmp = BitmapFactory.decodeByteArray(event.getImage(), 0, event.getImage().length);
+        holder.image.setImageBitmap(bmp);
         holder.cardView.setOnClickListener(v -> clickListener.onItemClick(event));
     }
 

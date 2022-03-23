@@ -8,4 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="underline_user_top">#BDB6B6</color>
+
+    <array name="arc_colors_custom">
+        <item>#DE7867</item>
+        <item>#4B9EF7</item>
+        <item>#262626</item>
+    </array>
 </resources>

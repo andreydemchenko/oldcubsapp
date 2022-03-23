@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -37,11 +39,12 @@ public class EventDetailActivity extends AppCompatActivity {
             String title = arguments.getString("event_name");
             String date = arguments.getString("event_date");
             String text = arguments.getString("event_text");
-            String image = arguments.getString("event_image");
+            byte[] image = arguments.getByteArray("event_image");
             tvTitle.setText(title);
             tvDate.setText(date);
             tvText.setText(text);
-            Picasso.get().load(image).into(imageView);
+            Bitmap bmp = BitmapFactory.decodeByteArray(image, 0, image.length);
+            imageView.setImageBitmap(bmp);
         }
     }
 

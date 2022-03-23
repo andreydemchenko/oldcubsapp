@@ -4,18 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
@@ -30,6 +26,13 @@ public class MainActivity extends AppCompatActivity{
     
     private FirebaseUser currentUser;
     private static String userId;
+
+    public static Cursor cursorUser;
+    public static SQLiteDatabase dbUser;
+    public static Cursor cursorEvent;
+    public static SQLiteDatabase dbEvent;
+    public static Cursor cursorAch;
+    public static SQLiteDatabase dbAch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,5 +88,16 @@ public class MainActivity extends AppCompatActivity{
         homeFragment = new HomeFragment();
         shopFragment = new ShopFragment();
         topFragment = new TopFragment();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        cursorUser.close();
+        cursorEvent.close();
+        cursorAch.close();
+        dbUser.close();
+        dbEvent.close();
+        dbAch.close();
     }
 }

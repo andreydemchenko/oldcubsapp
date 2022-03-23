@@ -86,8 +86,12 @@ public class SignInActivity extends AppCompatActivity {
                     // signed in user can be handled in the listener.
                     if (!task.isSuccessful()) {
                         Log.w(TAG, "signInWithEmail:failed", task.getException());
-                        Toast.makeText(SignInActivity.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
+                        /*AestheticDialog.Builder dialog = new AestheticDialog.Builder(this, DialogStyle.FLASH, DialogType.ERROR);
+                        dialog.setTitle("Wrong login or password");
+                        dialog.setMessage("Please try again!");
+                        dialog.setAnimation(DialogAnimation.CARD);
+                        dialog.setOnClickListener(view2 -> dialog.dismiss());
+                        dialog.show();*/
                     }
                     hideProgressDialog();
                 });
